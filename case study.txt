@@ -1,0 +1,85 @@
+By using AWs cli command 
+
+vpc
+igw
+Subnets
+Route Table
+Subnet - Route Table Association
+EC2
+Security Groups
+ 
+To install nginx webserver
+
+yum install nginx -y
+
+ansible --version
+python --version
+note:python is mandatory in all the clients snd server because ansible is developed in python language
+now move to /etc/ansible/.This is the home directory of ansible.In this directory we see the following files
+i)ansible.cnf ___ This is the ansible configuration file.
+ii)hosts      ___ This is the host inventory file.In ths we can configure our clients
+iii)roles
+Now open the hosts inventory file
+cd /etc/ansible
+ls
+vi hosts
+[dev] //group name//
+ansible_server ansible_connection=local //this is to configure the server as client//
+[prod] 
+ansible_amazon ansible_host=ip of the clients //this is the configuration of clients//
+save and exit (:wq!)
+Now generate the ssh key in ansible server.Through ssh connection establish between the server and the clients
+ssh-keygen is the command to generate ssh key in server
+Now we can see id_rsa and id_rsa.pub keys in /root/.ssh
+
+#cd .ssh/
+#ssh-keygen
+   id_rsa id_rsa.pub
+
+
+execute the foolowing command 
+ssh-copy-i root@ip of clients or ssh-copy-id (client id)
+#ssh (clientid) ---control enters into the client and enter exit to come out of node
+
+To test the connection 
+ Ansible all -m ping  (response comes from node as pong)
+
+now connection established between the server and the clients
+
+
+.vi when.yml
+---
+ - hosts: all
+   tasks:
+   - name: create file for redhat family
+     file: path=/tmp/chef1 state=touch mode=0777
+     when: ansible_os_family == "RedHat"
+     ignore_errors: true
+   - name: create directory for debian family
+     file: path=/tmp/jenkins1 state=directory
+     when: ansible_os_family == "Debian"
+     ignore_errors: true
+:wq!
+
+
+we can use cloudwatch or nagios monitor tools from that sns used
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
